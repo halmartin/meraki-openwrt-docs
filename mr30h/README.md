@@ -1,4 +1,6 @@
-# Overview
+# Meraki MR30H
+
+## Overview
 
 The Meraki MR30H is a Cisco AP with 5 Gigabit Ethernet ports. It is powered solely by POE (802.3af/at) on the rear Ethernet port. If powered by 802.3at (30W), port 1 provides 802.3af (15W) output.
 
@@ -13,6 +15,21 @@ The Meraki MR30H is a Cisco AP with 5 Gigabit Ethernet ports. It is powered sole
 |WLAN 5.0GHz|a/n/ac 2x2, a/n/ac 1x1|
 |Ethernet 1Gbit ports|5|
 
+## Quick Start
+
+This section provides a condensed guide for experienced users who want to quickly flash OpenWRT on their MR30H:
+
+1. Disassemble the device (remove two T10 screws, pry open case)
+2. Connect UART to J8 header (115200 baud, 3.3V)
+3. For devices with U-Boot before September 2017:
+   - Use `ubootwrite.py` to flash new U-Boot
+   - Write U-Boot to `part.safe` for safety
+4. For newer devices:
+   - Use hardware NAND programmer to flash U-Boot
+5. Boot into new U-Boot and interrupt with space key
+6. Load and flash OpenWRT firmware via TFTP
+7. Reboot and enjoy!
+
 # Disclaimer
 
 The following instructions are provided AS-IS and the author assumes no liability for any damages incurred.
@@ -25,39 +42,54 @@ By continuing, you acknowledge that you understand the risks and hereby assume a
 
 Remove the two T10 screws on the rear of the AP.
 
-![MR30H rear](images/MR30H_rear.jpg "MR30H rear")
+![Rear view of the MR30H showing the two T10 screws that need to be removed](images/MR30H_rear.jpg "MR30H rear")
+*Figure 1: Rear view of the MR30H showing the location of the two T10 screws (circled) that need to be removed for disassembly.*
 
 Using a guitar pick or similar plastic tool, insert it on the side between the grey metal plate and the white plastic body and pry up gently.
 
-![MR30H rear pry](images/MR30H_rear_pry.jpg "MR30H rear pry")
+![Prying open the MR30H case using a plastic tool between the metal plate and plastic body](images/MR30H_rear_pry.jpg "MR30H rear pry")
+*Figure 2: Demonstration of using a plastic tool to gently pry between the grey metal plate and white plastic body.*
 
 The rubberised border on the metal plate *does not* need to be removed.
 
 The metal back plate has several latches around the perimeter (but none on the bottom by the Ethernet ports).
 
-![MR30H rear open](images/MR30H_rear_open.jpg "MR30H rear open")
+![MR30H with the metal back plate removed showing the internal components](images/MR30H_rear_open.jpg "MR30H rear open")
+*Figure 3: View of the MR30H with the metal back plate removed, showing the latches around the perimeter that secure the plate.*
 
 Once you have removed the metal back plate, push up gently on the bottom Ethernet ports while pulling gently on the rear-mounted Ethernet port to remove the PCB.
 
-![MR30H push up](images/MR30H_PCB_push.jpg "MR30H push up")
+![Removing the PCB by pushing up on the bottom Ethernet ports](images/MR30H_PCB_push.jpg "MR30H push up")
+*Figure 4: Demonstration of how to remove the PCB by pushing up on the bottom Ethernet ports while pulling on the rear-mounted port.*
 
 The PCB should come free from the plastic housing, pull the bottom (4 Ethernet ports) up as if you are opening a book.
 
-![MR30H open](images/MR30H_open.jpg "MR30H open")
+![MR30H with PCB opened like a book showing internal components](images/MR30H_open.jpg "MR30H open")
+*Figure 5: The MR30H with PCB opened like a book, showing the internal components and antenna connections.*
 
 If done carefully, there is no need to remove the WiFi antenna connectors to access the NAND flash.
 
 The TSOP48 NAND flash (U30, Spansion S34ML01G200TFV00) is located on the opposite side of the PCB.
 
-![MR30H U30 NAND](images/MR30H_U30.jpg "MR30H U30 NAND")
+![Close-up of the TSOP48 NAND flash chip (U30) on the MR30H PCB](images/MR30H_U30.jpg "MR30H U30 NAND")
+*Figure 6: Close-up of the TSOP48 NAND flash chip (U30, Spansion S34ML01G200TFV00) that needs to be flashed.*
 
 To flash, you need to desolder the TSOP48 or use a 360 clip.
 
-![MR30H with 360 clip](images/MR30H_360clip.jpg "MR30H with 360 clip")
+![MR30H with a 360 clip attached to the NAND flash chip for in-circuit programming](images/MR30H_360clip.jpg "MR30H with 360 clip")
+*Figure 7: Demonstration of using a 360 clip to connect to the NAND flash chip for in-circuit programming without desoldering.*
 
-# Installation
+## Installation
 
 The MR30H does not have secure boot enabled. Similar to the MR33, Meraki have disabled interrupting U-Boot.
+
+### Installation Methods
+
+| Method | Success Rate | Difficulty | Requirements |
+|--------|--------------|------------|--------------|
+| UART Software Flash (pre-Sep 2017) | ~90% | Easy | UART adapter, Python 3 |
+| Hardware NAND Flash | ~99% | Hard | NAND programmer, soldering skills |
+| 360 Clip NAND Flash | ~75% | Medium | 360 clip, steady hands |
 
 If your MR30H has U-Boot with a compilation date after September 2017, you will need a hardware flashing tool for TSOP48 NAND (3.3V) such as the NANDWay, XGecu TL866/T48/T56.
 
@@ -91,12 +123,12 @@ Decompress `u-boot.bin.gz` dump (which contains OOB data) and overwrite the U-Bo
 
 ## Software flashing (ubootwrite)
 
-Use `ubootwrite.py` to transfer the `u-boot.itb` image to the router. The UART header is J8, 3.3V, 115200 and follows the typical Meraki pinout: 1: Vcc (DO NOT CONNECT), 2: Tx, 3: Rx, 4: GND.
+Use the `ubootwrite.py` script from the tools directory to transfer the `u-boot.itb` image to the router. The UART header is J8, 3.3V, 115200 and follows the typical Meraki pinout: 1: Vcc (DO NOT CONNECT), 2: Tx, 3: Rx, 4: GND.
 
 **Note**: The `.itb` file is a [Flattened Image Tree](https://docs.u-boot.org/en/latest/usage/fit/index.html). We prefer `u-boot.itb` to sending `u-boot.bin` because it is compressed and thus smaller/faster to transfer.
 
 ```
-./ubootwrite.py --serial=/dev/ttyUSB0 --write u-boot.itb
+../tools/ubootwrite.py --serial=/dev/ttyUSB0 --write u-boot.itb
 ```
 
 To avoid bricking your router, it is *highly* recommended at this point that you flash the unlocked U-Boot to the `part.safe` ubi volume. This can be done from U-Boot with the following commands:

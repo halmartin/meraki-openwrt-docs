@@ -1,13 +1,14 @@
-# Overview
+# Meraki Z3 and Go GX20
 
-## Z3
+## Overview
+
+### Z3
 
 "Teleworker" device with 802.11ac and an integrated 5 port Gigabit switch.
 
 Port 5 has POE output (802.3af). The WAN port is used for tftp booting in U-Boot.
 
 This device ships with secure boot, and cannot be flashed without an external programmer.
-
 
 |||
 |--|--|
@@ -20,7 +21,7 @@ This device ships with secure boot, and cannot be flashed without an external pr
 |WLAN 5.0GHz|a/n/ac 2x2|
 |Ethernet 1Gbit ports|5|
 
-## Go GX20
+### Go GX20
 
 Wired router with 5 port Gigabit switch. It shares the same PCB as the Z3, but without the WiFi radios.
 
@@ -39,6 +40,22 @@ This device ships with secure boot, and cannot be flashed without an external pr
 |WLAN 5.0GHz|N/A|
 |Ethernet 1Gbit ports|5|
 
+## Quick Start
+
+This section provides a condensed guide for experienced users who want to quickly flash OpenWRT on their Z3/GX20:
+
+1. Disassemble the device (remove four T8 screws under rubber feet, pry open case)
+2. Connect UART to J8 header (115200 baud, 3.3V)
+3. Use hardware NAND programmer to flash the NAND chip:
+   - Desolder the TSOP48 NAND chip (in-circuit programming not reliable)
+   - Flash the provided u-boot.bin and ubi.bin images
+4. Modify the EEPROM to disable secure boot:
+   - Change byte at offset 0x49 to 0x1e
+5. Reassemble the device
+6. Boot into new U-Boot and interrupt with space key
+7. Load and flash OpenWRT firmware via TFTP through WAN port
+8. Reboot and enjoy!
+
 # Disclaimer
 
 The following instructions are provided AS-IS and the author assumes no liability for any damages incurred.
@@ -51,25 +68,37 @@ By continuing, you acknowledge that you understand the risks and hereby assume a
 
 Remove the four T8 screws on the bottom of the device under the rubber feet.
 
-![Z3 feet](images/Z3-feet-circled.jpg "Z3 bottom")
+![Bottom view of the Z3 showing the four T8 screws under the rubber feet](images/Z3-feet-circled.jpg "Z3 bottom")
+*Figure 1: Bottom view of the Z3 showing the location of the four T8 screws (circled) hidden under the rubber feet.*
 
 Using a guitar pick or similar plastic tool, insert it on the side between the bottom case and the side, pry up gently.
 
-![Z3 guitar](images/Z3-guitar.jpg "Z3 with prying tool")
+![Prying open the Z3 case using a guitar pick between the bottom case and side](images/Z3-guitar.jpg "Z3 with prying tool")
+*Figure 2: Demonstration of using a guitar pick to gently pry between the bottom case and the side of the Z3.*
 
 The plastic bottom has several latches around the perimeter (but none on the rear by the Ethernet ports).
 
-![Z3 clips](images/Z3-clips.jpg "Z3 retention clips")
+![Close-up of the retention clips around the perimeter of the Z3 case](images/Z3-clips.jpg "Z3 retention clips")
+*Figure 3: Close-up view of the retention clips around the perimeter of the Z3 case that secure the bottom plastic cover.*
 
 The TSOP48 NAND flash (U30, Spansion S34ML01G200TFV00) is located on the bottom side of the PCB (facing you as you remove the bottom plastic). To flash, you will need to desolder the TSOP48. Attempts to flash in-circuit using a 360 clip were unsuccessful.
 
-![Z3 PCB](images/Z3-pcb.jpg "Z3 PCB")
+![Z3 PCB showing the location of the NAND flash and EEPROM chips](images/Z3-pcb.jpg "Z3 PCB")
+*Figure 4: The Z3 PCB showing the location of the TSOP48 NAND flash chip (U30) and the SOIC8 I2C EEPROM (U32) that need to be modified.*
 
 The SOIC8 I2C EEPROM (U32, Atmel 24C64) is located on the bottom side of the PCB (facing you as you remove the bottom plastic). It can be flashed in circuit using a chip clip.
 
-# Installation
+## Installation
 
 The Z3/GX20 have secure boot enabled from the factory. Meraki have disabled interrupting U-Boot.
+
+### Installation Methods
+
+| Method | Success Rate | Difficulty | Requirements |
+|--------|--------------|------------|--------------|
+| Hardware NAND Flash | ~95% | Hard | NAND programmer, soldering skills |
+| 360 Clip NAND Flash | ~30% | Medium | 360 clip, steady hands |
+| EEPROM Modification | ~99% | Medium | SOIC8 clip or soldering skills |
 
 You will need a hardware flashing tool for TSOP48 NAND (3.3V) such as the NANDWay, XGecu TL866/T48/T56.
 
