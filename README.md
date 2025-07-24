@@ -30,6 +30,10 @@ Devices with subdirectories will have, at a minimum, bootloader support. OpenWrt
 
 Some devices are already supported in OpenWrt, they are included as submodules in this repository. Refer to the OpenWrt forum/wiki for installation instructions.
 
+## OpenWrt builds
+
+Not provided here, refer to the [OpenWrt Firmware Selector](https://firmware-selector.openwrt.org/) for stable/snapshot builds, or search in open PRs in the [OpenWrt repository](https://github.com/openwrt/openwrt).
+
 ## Donating hardware
 
 If you own Meraki hardware not listed here that you would like to see supported and are willing to donate, please contact me.
