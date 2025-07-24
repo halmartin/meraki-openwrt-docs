@@ -2,13 +2,11 @@
 
 This repository contains bootloader builds and flashing instructions for various Meraki products.
 
-There is no known method to flash the devices without physically opening them and removing/programming chips. For outdoor devices, disassembly will compromise the weather seal.
+There is no known method to flash the devices without physically opening them and removing/programming chips. For outdoor devices, disassembly will compromise the weather seal. The MX64 and MX65 are exceptions, they can be flashed without opening the device (refer to the OpenWrt forum/wiki).
 
 Device builds and instructions can be found in their respective directories.
 
 # Prerequisites
-
-Before starting, ensure you have the following:
 
 ## Tools
 - Small Torx and Philips screwdrivers
