@@ -6,6 +6,8 @@ There is no known method to flash the devices without physically opening them an
 
 Device builds and instructions can be found in their respective directories.
 
+Devices which are submodules may not contain installation instructions in the repository, please refer to the OpenWrt [forum](https://forum.openwrt.org/) or [Wiki](https://openwrt.org/toh/meraki/start) for more information.
+
 # Prerequisites
 
 ## Tools
