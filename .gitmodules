@@ -1,0 +1,9 @@
+[submodule "mr42_mr52"]
+	path = mr42_mr52
+	url = https://github.com/clayface/openwrt-cryptid.git
+[submodule "mx65"]
+	path = mx65
+	url = https://github.com/clayface/U-boot-MX64-20190430_MX65.git
+[submodule "mx64"]
+	path = mx64
+	url = https://github.com/clayface/U-boot-MX64-20190430_MX64.git
