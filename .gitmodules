@@ -7,3 +7,6 @@
 [submodule "mx64"]
 	path = mx64
 	url = https://github.com/clayface/U-boot-MX64-20190430_MX64.git
+[submodule "mr33"]
+	path = mr33
+	url = https://github.com/riptidewave93/LEDE-MR33.git
