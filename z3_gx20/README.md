@@ -132,6 +132,23 @@ printf "\x1e" | dd of=/tmp/eeprom.bin bs=1 seek=$((0x49)) conv=notrunc
 
 Flash the I2C EEPROM with the modified contents. Note that the device will not boot if you modify the board major number and have not overwritten the `ubi` and `u-boot` (if applicable) regions of NAND.
 
+## ART
+
+OpenWrt expects a ubivol `ART`, which is **not included** in the `ubi.bin.gz` dump, with the WiFi calibration data specific to your device.
+
+From the OpenWrt initramfs image that you tftp booted, create the `ART` ubivol:
+```
+cat /dev/mtd10 > /tmp/ART.bin
+ubimkvol /dev/ubi0 -N ART -s 524288
+# VERIFY the volume ID the above command outputs
+# Volume ID 1, size 5 LEBs (634880 bytes, 620.0 KiB), LEB size 126976 bytes (124.0 KiB), dynamic, name "ART", alignment 1
+ubiupdatevol /dev/ubi0_1 /tmp/ART.bin
+```
+
+**Note:** Do not run `sysupgrade` to install OpenWrt until after you have created the `ART` ubivol,
+or there will not be sufficient space to create it later as `rootfs_data` automatically
+expands to all remaining capacity.
+
 # New U-Boot
 
 The new U-Boot build uses the space character `" "` (without quotes) to interrupt boot.
