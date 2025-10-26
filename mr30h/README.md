@@ -19,7 +19,7 @@ The following instructions are provided AS-IS and the author assumes no liabilit
 
 Disassembling your devices and flashing bootloaders/firmwares will VOID any remaining warranty. Incorrectly flashing your device will lead to a brick that is only recoverable via hardware methods.
 
-By continuing, you acknowledge that you understand the risks and hereby assume all responsibility for any damages or loss of fucntionality that may result.
+By continuing, you acknowledge that you understand the risks and hereby assume all responsibility for any damages or loss of functionality that may result.
 
 # Disassembly
 
