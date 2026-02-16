@@ -101,7 +101,7 @@ The above partition offsets exclude OOB data.
 
 **Note**: The hardware dumping tool will dump NAND with OOB data, so the offsets will be slightly larger than the above.
 
-Decompress `ubi.bin.gz` dump (contains OOB data) and overwrite the `ubi` portion of NAND from `0xc60000-0x8400000` (length `0x77a0000`).
+Decompress `ubi.bin.gz` dump (contains OOB data) and overwrite the `ubi` portion of NAND from `0xc60000-0x7fe0000` (length `0x7380000`).
 
 You will need access to UART to `tftpboot` the OpenWrt initramfs image after flashing NAND. The NAND dump only contains an unlocked U-Boot.
 
