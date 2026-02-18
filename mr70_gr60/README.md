@@ -347,7 +347,7 @@ A: The Ethernet PHY in the device requires some [extra setup](https://github.com
 
 Q: Is there a way to recover from a bad configuration without disassembly?
 
-A: Yes, hold the reset button when the green LED begins flashing to enter [failsafe mode](https://openwrt.org/docs/guide-user/troubleshooting/failsafe_and_factory_reset). The power LED will be off in failsafe mode.
+A: Yes, hold the reset button just after the orange LED goes out to enter [failsafe mode](https://openwrt.org/docs/guide-user/troubleshooting/failsafe_and_factory_reset). The LED will flash blue in failsafe mode.
 
 Q: Is there a way to recover from a bad flash if OpenWrt does not boot at all? (without disassembly)
 
