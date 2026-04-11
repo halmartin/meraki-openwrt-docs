@@ -1,6 +1,6 @@
 # Overview
 
-These instructions are ONLY for users with an MR33 or MR74 which had the secure boot fuses blown:
+These instructions are ONLY for users with an MR30H, MR33, or MR74 which had the secure boot fuses blown:
 ```
 Secure boot NOT enabled! Blowing fuses... Resetting now.
 ```
